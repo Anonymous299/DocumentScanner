@@ -3,6 +3,7 @@
 import argparse
 import cv2
 import imutils
+import sys
 
 ##Get image as an argument
 ap = argparse.ArgumentParser()
@@ -36,9 +37,16 @@ for c in cnts:
 
 ##    if approximated contour has 4 points, probably a rectangle
     if len(approx) == 4:
-        print("Found some kind of rectangle")
-        cv2.drawContours(image, [approx], -1, (0, 255, 0), 2)
-        cv2.imshow("Contours", image)
-        cv2.waitKey(0)
+        screenCnt = approx
+        break    
 
+##If document exists, draw and show it
+try:
+    cv2.drawContours(image, [screenCnt], -1, (0, 255, 0), 2)
+except:
+    print("No document found")
+    sys.exit()
+    
+cv2.imshow("Contours", image)
+cv2.waitKey(0)
 cv2.destroyAllWindows()
